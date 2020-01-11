@@ -8,8 +8,6 @@ define("SUB_DOMAIN", "home");
 define("FULL_DOMAIN", SUB_DOMAIN . "." . BASE_DOMAIN);
 define("FILE_CACHE_IP",  __DIR__ . "/ip_cache.txt");
 
-$recordId = "bbd43d0b36c0a9680ec9c4ede2f3e932";
-
 $email = "stanislavqq@yandex.ru";
 
 $key        = new Cloudflare\API\Auth\APIKey($email, API_KEY);

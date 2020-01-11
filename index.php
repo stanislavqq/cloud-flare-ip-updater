@@ -1,26 +1,12 @@
 <?php
 
 require 'bootstrap.php';
+require 'functions.php';
 
-use Naucon\File\FileReader;
-use Naucon\File\FileWriter;
+$ipAddress = file_get_contents("https://api.ipify.org");
 
-$ipAddress = file_get_contents("https://www.ipify.org/");
+$recordId = "f23923dc8beba18b342538ec99e30234";
 
-$cacheFile = new FileReader(FILE_CACHE_IP);
-if ($cacheFile->firstLine() !== $ipAddress) {
-    // Update
-    $dns->updateRecordDetails(ZONE_ID, $recordId, [
-        'type' => "A",
-        'name' => "home.ignal.space",
-        'content' => $ipAddress,
-        'ttl' => 1
-    ]);
-
-    $file = new FileWriter(FILE_CACHE_IP);
-    try {
-        $file->write($ipAddress . PHP_EOL);
-    } catch (\Naucon\File\Exception\FileWriterException $ex) {
-        echo $ex;
-    }
+if (checkIp($ipAddress)) {
+    updateIp($recordId, $ipAddress);
 }
