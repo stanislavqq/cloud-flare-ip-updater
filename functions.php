@@ -24,9 +24,8 @@ function updateRecord(\Cloudflare\API\Endpoints\DNS $dns, string $recordId, stri
             'ttl' => 1
         ]);
     } catch (Exception $ex) {
-        echo '<pre>';
         echo $ex->getMessage();
-        echo '</pre>';
+        die();
     }
 }
 
