@@ -13,5 +13,5 @@ $ipAddress = file_get_contents("https://api.ipify.org");
 $recordId = "1297b0fd1fb05b0e915d852e7f817d8a"; //for *
 
 if (checkIp($ipAddress)) {
-    updateIp($recordId, $ipAddress);
+    updateIp($recordId, $ipAddress, "*");
 }

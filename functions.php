@@ -6,20 +6,20 @@ function checkIp(string $ipAddress): bool
     return $cacheFile->firstLine() !== $ipAddress;
 }
 
-function updateIp(string $recordId, string $ipAddress)
+function updateIp(string $recordId, string $ipAddress, string $subDomainName)
 {
     global $dns;
 
-    updateRecord($dns, $recordId, $ipAddress);
+    updateRecord($dns, $recordId, $ipAddress, $subDomainName);
     updateCacheFile($ipAddress);
 }
 
-function updateRecord(\Cloudflare\API\Endpoints\DNS $dns, string $recordId, string $ip): void
+function updateRecord(\Cloudflare\API\Endpoints\DNS $dns, string $recordId, string $ip, string $subDomainName): void
 {
     try {
         $dns->updateRecordDetails(ZONE_ID, $recordId, [
             'type' => "A",
-            'name' => "home.ignal.space",
+            'name' => $subDomainName . "." . BASE_DOMAIN,
             'content' => $ip,
             'ttl' => 1
         ]);
