@@ -9,7 +9,7 @@ use \Cron\Executor\Executor;
 use \Cron\Cron;
 
 $job = new ShellJob();
-echo 'php ' . __DIR__ . '/run.php';
+
 $job->setCommand('php ' . __DIR__ . '/run.php');
 $job->setSchedule(new CrontabSchedule('0 0 * * *'));
 
