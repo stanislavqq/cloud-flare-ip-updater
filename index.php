@@ -3,7 +3,6 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 
 require 'bootstrap.php';
-require 'functions.php';
 
 use \App\DnsRecord;
 use \App\CloudFlareFacade;

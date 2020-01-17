@@ -1,17 +1,24 @@
 <?php
-
-//(PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) && die('cli only');
 ini_set('display_errors', true);
 error_reporting(E_ALL);
+//(PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) && die('cli only');
 
 require 'bootstrap.php';
-require 'functions.php';
 
-$ipAddress = file_get_contents("https://api.ipify.org");
+use \App\DnsRecord;
+use \App\CloudFlareFacade;
+use \App\FileCacheFacade;
+use \App\UpdaterFacade;
 
-//$recordId = "f23923dc8beba18b342538ec99e30234"; //for home
-$recordId = "1297b0fd1fb05b0e915d852e7f817d8a"; //for *
+$ipAddress = getRemoteIp();
 
-if (checkIp($ipAddress)) {
-    updateIp($recordId, $ipAddress, "*");
+$CFFacade           = new CloudFlareFacade(config('api_email'), config('api_key'), config('zone_id'));
+$FileCacheFacade    = new FileCacheFacade(config('file_cache_name'));
+$facade             = new UpdaterFacade($CFFacade, $FileCacheFacade);
+
+if ($facade->checkNewIp($ipAddress)) {
+    $facade->updateIp(new DnsRecord("1297b0fd1fb05b0e915d852e7f817d8a", [
+        'name' => '*.' . config('domain'),
+        'content' => $ipAddress
+    ]));
 }

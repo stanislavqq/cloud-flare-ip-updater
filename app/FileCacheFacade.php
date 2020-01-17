@@ -57,7 +57,7 @@ final class FileCacheFacade
     protected function setFileWriter(string $path): void
     {
         try {
-            $this->fileWriter = new FileWriter($path, 'w');
+            $this->fileWriter = new FileWriter($path, 'w+');
         } catch (FileException $exception) {
             print $exception;
         }
