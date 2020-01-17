@@ -2,7 +2,22 @@
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-// Write folder content to log every five minutes.
-$job1 = new \Cron\Job\ShellJob();
-$job1->setCommand('php run.php');
-$job1->setSchedule(new \Cron\Schedule\CrontabSchedule('0 * * * *'));
+use \Cron\Schedule\CrontabSchedule;
+use \Cron\Job\ShellJob;
+use \Cron\Resolver\ArrayResolver;
+use \Cron\Executor\Executor;
+use \Cron\Cron;
+
+$job = new ShellJob();
+echo 'php ' . __DIR__ . '/run.php';
+$job->setCommand('php ' . __DIR__ . '/run.php');
+$job->setSchedule(new CrontabSchedule('0 0 * * *'));
+
+$resolver = new ArrayResolver();
+$resolver->addJob($job);
+
+$cron = new Cron();
+$cron->setExecutor(new Executor());
+$cron->setResolver($resolver);
+
+$cron->run();
